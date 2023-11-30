@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Controller, Post, Body, Get, Param, Patch, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 
@@ -22,5 +22,10 @@ export class UsersController {
     @Get()
     findAllUsers(@Query('email') email: string){
         return this.userServ.find(email);
+    }
+
+    @Delete('/:id')
+    removeUser(@Param('id') id: number){
+        return this.userServ.remove(id);
     }
 }
