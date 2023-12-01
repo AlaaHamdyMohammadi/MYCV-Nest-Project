@@ -4,39 +4,41 @@ import { Controller, Post, Body, Get, Param, Patch, Delete, Query, NotFoundExcep
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 
 @Controller('auth')
 export class UsersController {
-    constructor(private userServ: UsersService){}
+  constructor(private userServ: UsersService) {}
 
-    @Post('/signup')
-    createUser(@Body() body: CreateUserDto){
-        // console.log(body);
-        this.userServ.create(body.email, body.password)
-    }
+  @Post('/signup')
+  createUser(@Body() body: CreateUserDto) {
+    // console.log(body);
+    this.userServ.create(body.email, body.password);
+  }
 
-    @UseInterceptors(ClassSerializerInterceptor)
-    @Get('/:id')
-    findUser(@Param('id') id: string){
-        const user = this.userServ.findOne(parseInt(id));
-        if(!user){
-            throw new NotFoundException('User not found');
-        }
-        return user;
+  @UseInterceptors(SerializeInterceptor)
+  @Get('/:id')
+  findUser(@Param('id') id: string) {
+    console.log('handler is running...');
+    const user = this.userServ.findOne(parseInt(id));
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+    return user;
+  }
 
-    @Get()
-    findAllUsers(@Query('email') email: string){
-        return this.userServ.find(email);
-    }
+  @Get()
+  findAllUsers(@Query('email') email: string) {
+    return this.userServ.find(email);
+  }
 
-    @Delete('/:id')
-    removeUser(@Param('id') id: number){
-        return this.userServ.remove(id);
-    }
+  @Delete('/:id')
+  removeUser(@Param('id') id: number) {
+    return this.userServ.remove(id);
+  }
 
-    @Patch('/:id')
-    updateUser(@Param('id') id: string, @Body() body: UpdateUserDto){
-        return this.userServ.update(parseInt(id), body);
-    }
+  @Patch('/:id')
+  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
+    return this.userServ.update(parseInt(id), body);
+  }
 }
