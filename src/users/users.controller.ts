@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Controller, Post, Body, Get, Param, Patch, Delete, Query, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Query, NotFoundException, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -15,6 +15,7 @@ export class UsersController {
         this.userServ.create(body.email, body.password)
     }
 
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get('/:id')
     findUser(@Param('id') id: string){
         const user = this.userServ.findOne(parseInt(id));
