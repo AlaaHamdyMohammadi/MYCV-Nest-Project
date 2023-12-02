@@ -7,8 +7,13 @@ import { map } from "rxjs";
 import { plainToClass } from "class-transformer";
 import { UserDto } from "src/users/dtos/user.dto";
 
-export function Serialize(dto: any){
-    return UseInterceptors(new SerializeInterceptor(dto));
+interface ClassConstructor{
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    new (...args: any[]): {}
+}
+
+export function Serialize(dto: ClassConstructor) {
+  return UseInterceptors(new SerializeInterceptor(dto));
 }
 
 export class SerializeInterceptor implements NestInterceptor{
