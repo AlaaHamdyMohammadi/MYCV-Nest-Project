@@ -10,6 +10,7 @@ import {
   Delete,
   Query,
   NotFoundException,
+  Session,
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
@@ -28,19 +29,31 @@ export class UsersController {
     private authServ: AuthService,
   ) {}
 
+  //   @Get('/colors/:color')
+  //   setColor(@Param('color') color: string, @Session() session: any){
+  //     session.color = color;
+  //   }
+
+  //   @Get('/colors')
+  //   getColor(@Session() session: any){
+  //     return session.color;
+  //   }
+
   @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
-    // console.log(body);
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
     //this.userServ.create(body.email, body.password);
-    return this.authServ.signup(body.email, body.password);
-  }
+    const user = await this.authServ.signup(body.email, body.password);
+    session.userId = user.id;
+    return user
+}
 
   @Post('/signin')
-  signin(@Body() body: CreateUserDto){
-    return this.authServ.signin(body.email, body.password);
-  }
+  async signin(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authServ.signin(body.email, body.password);
+    session.userId = user.id;
+    return user
+}
 
-  //   @UseInterceptors(new SerializeInterceptor(UserDto))
 
   @Get('/:id')
   findUser(@Param('id') id: string) {
