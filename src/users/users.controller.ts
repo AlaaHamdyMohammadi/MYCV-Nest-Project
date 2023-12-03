@@ -35,6 +35,11 @@ export class UsersController {
     return this.authServ.signup(body.email, body.password);
   }
 
+  @Post('/signin')
+  signin(@Body() body: CreateUserDto){
+    return this.authServ.signin(body.email, body.password);
+  }
+
   //   @UseInterceptors(new SerializeInterceptor(UserDto))
 
   @Get('/:id')
