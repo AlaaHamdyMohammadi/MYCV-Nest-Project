@@ -9,6 +9,7 @@ import {
 import { UsersService } from './users.service';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
+import { Session } from 'inspector';
 
 const scrypt = promisify(_scrypt);
 
