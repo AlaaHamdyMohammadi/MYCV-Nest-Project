@@ -15,6 +15,9 @@ Content-Type: application/json
     "email": "alaa25@info.com",
     "password": "123456"
 }
+### Logout user
+POST http://localhost:3000/auth/signout
+
 
 ### Get the currently signed in user
 Get http://localhost:3000/auth/whoami

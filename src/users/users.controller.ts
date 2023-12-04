@@ -44,6 +44,11 @@ export class UsersController {
     return this.userServ.findOne(session.userId);
   }
 
+  @Post('/signout')
+  signout(@Session() session: any){
+    session.userId = null
+  }
+
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto, @Session() session: any) {
     //this.userServ.create(body.email, body.password);
